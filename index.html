@@ -1,0 +1,60 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>The Mysterious Game of Life - Part 2</title>
+    <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+    <h3>Part 2</h3>
+    <div class="canvas-container">
+        <div style="max-width: 250px;">
+            <p><a href="https://en.wikipedia.org/wiki/Conway%27s_Game_of_Life">Conway's Game of Life</a> is known for creating interesting behaviour in a 2d world with simple rules.<br>Think of yourself as a scientist living in a 2d world where Conway's rules are the leading theory for describing reality. However, it seems like sometimes observations differ from Conway's predictions.<br><strong>Can you figure out a better theory?</strong><br><a href="https://soerenarlt.github.io/conways_mystery/">Check out part 1</a>.</p>
+        </div>
+
+        <canvas id="drawCanvas" width="240" height="240" style="margin-left: 20px;"></canvas>
+        <div class="download-control">
+            <button onclick="downloadGrid()">Download Grid</button>
+            <input type="file" id="fileInput" accept=".txt" style="display: none;">
+            <button onclick="document.getElementById('fileInput').click();">Upload Grid</button>
+            <br>
+            <button onclick="restartSimulation()">Initialize Simulation</button>
+        </div>
+    </div>
+
+    <div class="controls">
+        <div class="speed-control">
+            <button onclick="setSpeed('slow')">🐢</button>
+            <button onclick="setSpeed('medium')" class="active">🚶</button>
+            <button onclick="setSpeed('fast')">🐎</button>
+        </div>
+        <div class="button-control">
+            <button onclick="startGame()">▶️</button> <!-- Play symbol -->
+            <button onclick="stopGame()">⏸️</button>   <!-- Stop symbol -->
+            <button onclick="restartSimulation()">⏮️</button> <!-- Restart/Refresh symbol -->
+            <!-- <button onclick="stepBack()">⬅️</button>  Step back symbol -->
+            <button onclick="stepForward()">➡️</button>  <!--Step forward symbol -->
+        </div>
+    </div>
+    
+    <div class="simulation-container">
+        <div>
+            <h3>Conway's Simulation:</h3>
+            <canvas id="gameCanvas" width=240 height=240></canvas>
+        </div>
+        <div>
+            <h3>Observation:</h3>
+            <canvas id="modifiedCanvas" width=240 height=240></canvas>
+        </div>
+        <div>
+            <h3>Difference:</h3>
+            <canvas id="differenceCanvas" width=240 height=240></canvas>
+        </div>
+    </div>
+
+    <div id="timestepCounter">timestep: 0</div>
+    <div id="disclaimer">idea and code by <a href="https://github.com/soerenarlt">soeren arlt</a></div>
+    <script src="script.js"></script>
+</body>
+</html>

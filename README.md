@@ -1,1 +1,1 @@
-# conways_mystery_2
+# conways_mystery
