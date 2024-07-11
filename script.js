@@ -147,16 +147,16 @@ function drawGrid(ctx, grid, darkGrid) {
             }
         }
     }
-    if (darkGrid !== null) {
-        for (let y = 0; y < rows; y++) {
-            for (let x = 0; x < cols; x++) {
-                if (darkGrid[y][x] === 1) {
-                    ctx.fillStyle = 'red';
-                    ctx.fillRect(x * cellSize + 4, y * cellSize + 4, 4, 4);
-                }
-            }
-        }
-    }
+    // if (darkGrid !== null) {
+    //     for (let y = 0; y < rows; y++) {
+    //         for (let x = 0; x < cols; x++) {
+    //             if (darkGrid[y][x] === 1) {
+    //                 ctx.fillStyle = 'red';
+    //                 ctx.fillRect(x * cellSize + 4, y * cellSize + 4, 4, 4);
+    //             }
+    //         }
+    //     }
+    // }
 }
 
 function computeNeighbors(grid) {
