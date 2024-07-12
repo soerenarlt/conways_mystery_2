@@ -22,6 +22,11 @@ let gofromstart = true;
 let timestep = 0;
 
 
+const MAX_HISTORY = 1000;
+let history = new Array(MAX_HISTORY).fill(null);
+let history_mod = new Array(MAX_HISTORY).fill(null);
+
+
 function setSpeed(option) {
     switch (option) {
         case 'slow':
@@ -74,6 +79,52 @@ function downloadGrid() {
     document.body.appendChild(a);
     a.click();
     URL.revokeObjectURL(url);
+}
+
+function downloadHistory() {
+    let historyString = '';
+    for (let i = 0; i < timestep; i++) {
+        let grid = history[i];
+        for (let row of grid) {
+            for (let cell of row) {
+                historyString += cell === 1 ? '■' : '□';
+            }
+            historyString += '\n'; // Add a line break for each row
+        }
+        historyString += '###\n'; // Add an extra line break between timesteps
+    }
+
+    const blob = new Blob([historyString], { type: 'text/plain' });
+    const url = URL.createObjectURL(blob);
+    const a = document.createElement('a');
+    a.style.display = 'none';
+    a.href = url;
+    a.download = 'history.txt';
+    document.body.appendChild(a);
+    a.click();
+    URL.revokeObjectURL(url);
+
+    let historyString_mod = '';
+    for (let i = 0; i < timestep; i++) {
+        let grid = history_mod[i];
+        for (let row of grid) {
+            for (let cell of row) {
+                historyString_mod += cell === 1 ? '■' : '□';
+            }
+            historyString_mod += '\n'; // Add a line break for each row
+        }
+        historyString_mod += '###\n'; // Add an extra line break between timesteps
+    }
+
+    const blob_mod = new Blob([historyString_mod], { type: 'text/plain' });
+    const url_mod = URL.createObjectURL(blob_mod);
+    const a_mod = document.createElement('a');
+    a_mod.style.display = 'none';
+    a_mod.href = url_mod;
+    a_mod.download = 'history_mod.txt';
+    document.body.appendChild(a_mod);
+    a_mod.click();
+    URL.revokeObjectURL(url_mod);
 }
 
 document.getElementById('fileInput').addEventListener('change', function(event) {
@@ -259,18 +310,15 @@ function drawDifference() {
 }
 
 
-const MAX_HISTORY = 1000;
-let history = new Array(MAX_HISTORY).fill(null);
 
 function restartSimulation() {
     stopGame();
     grid = [...initialGrid.map(row => [...row])];
     modifiedGrid = [...initialGrid.map(row => [...row])];
     darkGrid = create2DArray(rows, cols);
-    //set one entry to 1
-    // darkGrid[5][0] = 1;
-    
+    //set history to null
     history = new Array(MAX_HISTORY).fill(null);
+    history_mod = new Array(MAX_HISTORY).fill(null);
     drawGrid(gameCtx, grid, null);
     drawGrid(modifiedCtx, modifiedGrid, darkGrid);
     drawDifference();
@@ -306,6 +354,8 @@ function stepForward() {
 function gameLoop() {
     if (timestep < MAX_HISTORY) {
 
+        history[timestep] = [...grid.map(row => [...row])];
+        history_mod[timestep] = [...modifiedGrid.map(row => [...row])];
         timestep++;
         drawGrid(gameCtx, grid, null);
         drawGrid(modifiedCtx, modifiedGrid, darkGrid);
@@ -313,7 +363,6 @@ function gameLoop() {
         grid = updateGrid(grid);
         [modifiedGrid, darkGrid] = updateGridMod(modifiedGrid, darkGrid);
 
-        history[timestep] = [[...grid.map(row => [...row])], [...modifiedGrid.map(row => [...row])], [...darkGrid.map(row => [...row])]];
         document.getElementById('timestepCounter').textContent = `Timesteps: ${timestep}`;
     } else {
         stopGame();
